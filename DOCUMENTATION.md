@@ -28,7 +28,7 @@ The Flask CRUD API provides a simple way to manage a list of persons. Each perso
 - **Request Body (JSON):**
   ```json
   {
-      "name": "John Doe",
+      "name": "Favour",
       "age": 30
   }
   
@@ -53,7 +53,7 @@ The Flask CRUD API provides a simple way to manage a list of persons. Each perso
 - *Success (HTTP Status Code 200):*
 ```
 {
-    "name": "John Doe",
+    "name": "Favour",
     "age": 30
 }
 ```
@@ -103,6 +103,68 @@ The Flask CRUD API provides a simple way to manage a list of persons. Each perso
     "error": "Person not found"
 }
 ```
+
+
 ## Request and Response Formats
+
 - Request data should be sent in JSON format.
 - Responses are in JSON format and include either a success message or an error message.
+
+
+## Usage Examples
+*Here are some example API requests and responses:*
+
+ **Create a Person (POST /api/person)**
+- **Request:**
+```
+{
+    "name": "Oyeleye",
+    "age": 25
+}
+```
+- *Response (Success):*
+```
+{
+    "message": "Person created successfully"
+}
+```
+- *Response (Error - Missing Name):*
+```
+{
+    "error": "Name is required"
+}
+```
+
+  **Read a Person (GET /api/person/{name})**
+- **Request:**
+```
+GET /api/person/Oyeleye 
+```
+- **Response (Success):**
+```
+{
+    "name": "Oyeleye",
+    "age": 25
+}
+```
+- **Response (Error - Person Not Found):**
+```
+{
+    "error": "Person not found"
+}
+```
+
+
+##  Known Limitations
+
+This API uses an in-memory list for data storage and is not suitable for production use.
+Error handling is minimal and may require improvement for production use.
+Authentication and authorization are not implemented. Security measures should be added before deploying to production.
+
+## Setting Up and Running the API Locally
+
+*To deploy the API to a server, follow these steps:*
+
+1. Set up a server environment (e.g., AWS, Heroku, or a VPS).
+2. Deploy your code to the server.
+3. Configure the server to host the API.
