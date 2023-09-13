@@ -32,3 +32,77 @@ The Flask CRUD API provides a simple way to manage a list of persons. Each perso
       "age": 30
   }
   
+- **Response:**
+- *Success (HTTP Status Code 201):*
+```
+{
+    "message": "Person created successfully"
+}
+```
+- *Error (HTTP Status Code 400):*
+```
+{
+    "error": "Name is required"
+}
+```
+###  2. Read a Person
+
+- **Endpoint:** `GET /api/person/{name}`
+- **Description:** Fetch details of a person by their name.
+- **Response:**
+- *Success (HTTP Status Code 200):*
+```
+{
+    "name": "John Doe",
+    "age": 30
+}
+```
+- *Error (HTTP Status Code 404):*
+```
+{
+    "error": "Person not found"
+}
+```
+###  3. Update a Person
+
+- **Endpoint:** `PUT /api/person/{name}`
+- **Description:** Update details of an existing person by their name.
+- *Request Body (JSON):*
+```
+{
+    "age": 31
+}
+```
+- **Response:**
+- *Success (HTTP Status Code 200):*
+```
+{
+    "message": "Person updated successfully"
+}
+```
+- *Error (HTTP Status Code 404):*
+```
+{
+    "error": "Person not found"
+}
+```
+### 4. Delete a Person
+
+- **Endpoint:** DELETE `/api/person/{name}`
+- **Description:** Delete a person by their name.
+- **Response:**
+- *Success (HTTP Status Code 200):*
+```
+{
+    "message": "Person deleted successfully"
+}
+```
+- *Error (HTTP Status Code 404):*
+```
+{
+    "error": "Person not found"
+}
+```
+## Request and Response Formats
+- Request data should be sent in JSON format.
+- Responses are in JSON format and include either a success message or an error message.
