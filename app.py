@@ -1,68 +1,25 @@
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-
-# Sample data as an in-memory list
-persons = []
-
-# Helper function to find a person by name
+import models
+from . import api_views
+from models.event import Event
+from models.comment import Comment
+from flask import jsonify, request
 
 
-def find_person_by_name(name):
-    for person in persons:
-        if person['name'] == name:
-            return person
-    return None
 
-# CREATE operation
+# Create an Endpoint that GET's the images assiociated with a comment
+@event_bp.route('/api/comments/<comment_id>/images', methods=['GET'])
+def get_images_for_comment(comment_id):
+    try:
 
+        comment = models.storage.get(Comment, comment_id)
 
-@app.route('/api/person', methods=['POST'])
-def create_person():
-    data = request.get_json()
-    if 'name' not in data:
-        return jsonify({'error': 'Name is required'}), 400
-    new_person = {
-        'name': data['name'],
-        'age': data.get('age', None)
-    }
-    persons.append(new_person)
-    return jsonify({'message': 'Person created successfully'}), 201
+        if comment is None:
+            return jsonify({"error": "Comment not found"}), 404
 
-# READ operation
+        comment_images = comment.images
 
+        return jsonify({"comment_id": comment_id, "images": comment_images})
 
-@app.route('/api/person/<string:name>', methods=['GET'])
-def read_person(name):
-    person = find_person_by_name(name)
-    if person:
-        return jsonify(person)
-    return jsonify({'error': 'Person not found'}), 404
-
-# UPDATE operation
-
-
-@app.route('/api/person/<string:name>', methods=['PUT'])
-def update_person(name):
-    person = find_person_by_name(name)
-    if not person:
-        return jsonify({'error': 'Person not found'}), 404
-    data = request.get_json()
-    if 'age' in data:
-        person['age'] = data['age']
-    return jsonify({'message': 'Person updated successfully'})
-
-# DELETE operation
-
-
-@app.route('/api/person/<string:name>', methods=['DELETE'])
-def delete_person(name):
-    person = find_person_by_name(name)
-    if not person:
-        return jsonify({'error': 'Person not found'}), 404
-    persons.remove(person)
-    return jsonify({'message': 'Person deleted successfully'})
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    except Exception as e:
+        models.storage.session.rollback()
+        return jsonify({"error": str(e)}), 404
